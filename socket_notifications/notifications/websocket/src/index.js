@@ -1,4 +1,4 @@
-// noinspection NpmUsedModulesInstalled
+// noinspection NpmUsedModulesInstalled,JSCheckFunctionSignatures
 
 /**
  * Configure Redis server
@@ -65,7 +65,7 @@ Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
 
 
 // Пинг сервера - для всех (пустое бессмысленное сообщение)
-// setInterval(() =>{
-//     io.emit('ping', Date.now());
-//     // console.debug("Ping Send at " + Date.now());
-// }, 10000);
+setInterval(() =>{
+    io.emit('ping', Date.now());
+    // console.debug("Ping Send at " + Date.now());
+}, 10000);
