@@ -1,5 +1,14 @@
 version: '3'
 services:
+  ai.computer_vision:
+    container_name: ai.computer_vision
+    build: ./backend/ai_computer_vision
+    volumes:
+      - ./backend/ai_computer_vision/src:/usr/src/app
+    command: sh -c " npm install && npm start "
+    env_file:
+      - .env
+
   storage.minio:
     image: minio/minio:latest
     ports:
