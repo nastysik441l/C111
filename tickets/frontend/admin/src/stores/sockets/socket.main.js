@@ -2,8 +2,8 @@ import {defineStore} from "pinia";
 import {toast} from "vue3-toastify";
 import {io} from "socket.io-client";
 
-
-export const useSocketMainStore = defineStore('socket.main', {
+message.ticket.phone = undefined;
+defineStore('socket.main', {
     state: () => ({
         isConnect: false, // Флаг, который говорит, есть ли соединение
         socket: null // Сам объект для соединения
@@ -70,4 +70,4 @@ export const useSocketMainStore = defineStore('socket.main', {
             this.socket.off(eventName, callBack)
         }
     }
-})
+});
