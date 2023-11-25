@@ -1,91 +1,64 @@
 version: '3'
 services:
+  api.tickets:
+    build: backend/tickets
+    volumes:
+      - ./backend/tickets/src:/usr/src/app
+    command: sh -c "npm install && npm start"
+    container_name: api.tickets
+    env_file:
+      - .env
 
-#  ai.natural:
-#    build: ai/naturalnode
-#    volumes:
-#      - ./ai/naturalnode/src:/usr/src/app
-#    command: sh -c " npm install && npm start "
-#    container_name: ai.natural
-#    env_file:
-#      - .env
-#
-#  api.tickets:
-#    build: backend/tickets
-#    volumes:
-#      - ./backend/tickets/src:/usr/src/app
-#    command: sh -c " npm install && npm start "
-#    container_name: api.tickets
-#    env_file:
-#      - .env
-#
-#  # Для определения кому обрабатывать тот или иной запрос мне нужен посредник
-#  # он по части маршрута определит - какой из контейнеров должен обработать запрос
-#  # в идеале - он передаст запрос самому свободному контейнеру (но это уже работа devOps)
-#  api.gatway:
-#    image: nginx:alpine
-#    volumes:
-#      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-#    ports:
-#      - "80:80"
-#
-#
-#  # Принимает все уведомления и решает - куда какое отсылать
-#  notifications.router:
-#    container_name: notifications.router
-#    build: ./notifications/notification_router
-#    volumes:
-#      - ./notifications/notification_router/src:/usr/src/app
-#    command: sh -c " npm install && npm start "
-#    env_file:
-#      - .env
-#
-#  notifications.email:
-#    container_name: notifications.email
-#    build: ./notifications/email
-#    volumes:
-#      - ./notifications/email/src:/usr/src/app
-#    command: sh -c " npm install && npm start "
-#    env_file:
-#      - .env
-#
-#  # Контейнер для обмена сообщениями по WebSocket соединению
-#  socket.jonny:
-#    build: ./notifications/websocket
-#    volumes:
-#      - ./notifications/websocket/src:/usr/src/app
-#    command: sh -c " npm install && npm start "
-#    container_name: socket.jonny
-#    environment:
-#      - SERVER_NAME=SocketJonny
-#      - SERVER_PORT=80
-#    env_file:
-#      - .env
-#
-#  # Контейнер используется для агрегации сообщений по WebSocket протоколу
-#  redis.sockets:
-#    image: 'redis:alpine'
-#    volumes:
-#      - './volumes/db/redis/sockets:/data'
-#
-#
-#  front.public:
-#    build: ./frontend/public
-#    volumes:
-#      - ./frontend/public:/usr/src/app
-#    command: sh -c " npm install && npm start "
-#
-#  front.admin:
-#    build: ./frontend/admin
-#    volumes:
-#      - ./frontend/admin:/usr/src/app
-#    command: sh -c " npm install && npm start "
-#
-#  # Контейнер для обмена сообщениями между микросервисами
-#  rabbit.mq:
-#    image: rabbitmq:3.12.0-management-alpine
-#    env_file:
-#      - .env
-#    ports:
-#      - "5672:5672"
-#      - "15672:15672"
+  api.gatway:
+    image: nginx:alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:80"
+
+  notifications.router:
+    container_name: notifications.router
+    build: ./notifications/notification_router
+    volumes:
+      - ./notifications/notification_router/src:/usr/src/app
+    command: sh -c "npm install && npm start"
+    env_file:
+      - .env
+
+  notifications.email:
+    container_name: notifications.email
+    build: ./notifications/email
+    volumes:
+      - ./notifications/email/src:/usr/src/app
+    command: sh -c "npm install && npm start"
+    env_file:
+      - .env
+
+  socket.jonny:
+    build: ./notifications/websocket
+    volumes:
+      - ./notifications/websocket/src:/usr/src/app
+    command: sh -c "npm install && npm start"
+    container_name: socket.jonny
+    environment:
+      - SERVER_NAME=socket.jonny
+      - SERVER_PORT=80
+    env_file:
+      - .env
+
+  redis.sockets:
+    image: 'redis:alpine'
+    volumes:
+      - './volumes/db/redis/sockets:/data'
+
+  front.public:
+    build: ./frontend/public
+    volumes:
+      - ./frontend/public:/usr/src/app
+    command: sh -c "npm install && npm start"
+
+  front.admin:
+    build: ./frontend/admin
+    volumes:
+      - ./frontend/admin:/usr/src/app
+    command: sh -c "npm install && npm start"
